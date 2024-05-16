@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import {z} from "zod"
 import { prisma } from "../lib/prisma";
 
-export async function getCoffee (app: FastifyInstance) {
+export async function getCoffee(app: FastifyInstance) {
     app.get('/coffee/:CoffeeID', async (request, reply) => {
         const getCoffeeParams = z.object({
             CoffeeID: z.string().cuid(),
