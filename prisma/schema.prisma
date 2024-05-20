@@ -18,7 +18,6 @@ model User {
   username String
   password String
   email    String
-  carts    Cart[]
 }
 
 model Coffee {
@@ -26,25 +25,26 @@ model Coffee {
   name        String
   description String
   price       Float
-  carts       Cart[]
-  CartItem    CartItem[]
+  img_url     String
+  cartItems   CartItem[] // Reference to CartItem for many-to-many relationship
 }
 
 model Cart {
   id        String     @id @default(cuid())
-  status    String
-  userId    String
-  user      User       @relation(fields: [userId], references: [id])
-  cartItems CartItem[]
-  Coffee    Coffee     @relation(fields: [coffeeId], references: [id])
-  coffeeId  String
+  cartItems CartItem[] // Reference to CartItem for many-to-many relationship
 }
 
 model CartItem {
-  id       Int    @id @default(autoincrement())
-  cartId   String
-  coffeeId String
-  quantity Int
-  cart     Cart   @relation(fields: [cartId], references: [id])
-  coffee   Coffee @relation(fields: [coffeeId], references: [id])
+  id           Int    @id @default(autoincrement())
+  cartId       String
+  coffee_name  String
+  coffee_desc  String
+  coffeeId     String
+  img_url      String
+  quantity     Int
+  coffee_price Float
+  cart         Cart   @relation(fields: [cartId], references: [id])
+  coffee       Coffee @relation(fields: [coffeeId], references: [id])
+
+  @@unique([cartId, coffeeId]) // Ensure each coffee can be in the cart only once
 }

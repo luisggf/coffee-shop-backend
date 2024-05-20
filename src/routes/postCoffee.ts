@@ -9,15 +9,17 @@ export async function insertCoffee (app: FastifyInstance) {
         const createCoffeeBody = z.object({
             name: z.string(),
             description: z.string(),
-            price: z.number()
+            price: z.number(),
+            img_url: z.string()
         })
-        const { name, description, price } = createCoffeeBody.parse(request.body)
+        const { name, description, price, img_url } = createCoffeeBody.parse(request.body)
 
         const coffee = await prisma.coffee.create({
             data: {
                 name,
                 price,
-                description
+                description,
+                img_url
             }
         }) 
 

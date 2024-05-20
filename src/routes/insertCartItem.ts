@@ -6,22 +6,17 @@ export async function insertCartItem(app: FastifyInstance) {
 
     app.post('/add-to-cart', async (request, reply) => {
         const addToCartBody = z.object({
-            userId: z.string(),
-            cartId: z.string(), // Assuming you provide userId in the request body
-            coffeeId: z.string(), // Assuming you provide coffeeId in the request body
-            quantity: z.number().int().positive() // Assuming quantity should be a positive integer
+            cartId: z.string(),
+            coffeeId: z.string(),
+            coffee_name: z.string(),
+            coffee_desc: z.string(),
+            quantity: z.number().int().positive(),
+            coffee_price: z.number().positive(),
+            img_url: z.string()
         })
         
         try {
-            const { userId, cartId, coffeeId, quantity } = addToCartBody.parse(request.body)
-
-            // Check if the user exists
-            const user = await prisma.user.findUnique({
-                where: { id: userId }
-            })
-            if (!user) {
-                return reply.status(404).send({ message: "User not found" })
-            }
+            const { cartId, coffeeId, coffee_name, coffee_desc, quantity, coffee_price, img_url } = addToCartBody.parse(request.body)
 
             // Check if the coffee exists
             const coffee = await prisma.coffee.findUnique({
@@ -31,12 +26,24 @@ export async function insertCartItem(app: FastifyInstance) {
                 return reply.status(404).send({ message: "Coffee not found" })
             }
 
+            // Check if the cart exists
+            const cart = await prisma.cart.findUnique({
+                where: { id: cartId }
+            })
+            if (!cart) {
+                return reply.status(404).send({ message: "Cart not found" })
+            }
+
             // Create the cart item
             const cartItem = await prisma.cartItem.create({
                 data: {
                     cartId,
+                    coffee_name,
+                    coffee_desc,
                     coffeeId,
-                    quantity
+                    quantity,
+                    coffee_price,
+                    img_url
                 }
             })
 
