@@ -8,6 +8,8 @@ import cors from '@fastify/cors'
 import { getCoffees } from "../routes/getManyCoffes";
 import { getCartItems } from "../routes/getCartItems";
 import { insertCart } from "../routes/createCart";
+import { updateCartItemQuantity } from "../routes/updateCartItem";
+import { deleteCartItem } from "../routes/deleteCartItem";
 
 const server = fastify()
 
@@ -23,6 +25,8 @@ server.register(insertUser)
 server.register(getCoffees)
 server.register(getCartItems)
 server.register(insertCart)
+server.register(updateCartItemQuantity)
+server.register(deleteCartItem)
 
 
 server.listen({ port: 3333 }).then(() => {
