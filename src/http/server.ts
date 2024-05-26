@@ -16,6 +16,7 @@ import path from "path";
 import { getCartId } from "../routes/getCart";
 import { updateCoffee } from "../routes/updateCoffee";
 import { deleteCoffee } from "../routes/deleteCoffee";
+import { clearCart } from "../routes/ClearCart";
 
 const server = fastify();
 
@@ -47,6 +48,7 @@ server.register(deleteCartItem);
 server.register(getCartId);
 server.register(updateCoffee);
 server.register(deleteCoffee);
+server.register(clearCart);
 
 server.listen({ port: 3333 }).then(() => {
   console.log("Server is running!");
