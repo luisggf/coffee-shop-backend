@@ -3,9 +3,14 @@ import { prisma } from "../lib/prisma";
 
 export async function clearCart(app: FastifyInstance) {
   app.delete("/clear-cart", async (request, reply) => {
+    console.log("Chegou");
     try {
-      console.log("Chegou");
-      await prisma.cart.deleteMany({});
+      // First, delete all CartItem records
+      await prisma.cartItem.deleteMany();
+
+      // Then, delete all Cart records
+      await prisma.cart.deleteMany();
+
       return reply.status(200).send({ message: "Cart cleared successfully" });
     } catch (error) {
       console.error("Error clearing cart:", error);

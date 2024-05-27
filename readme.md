@@ -17,10 +17,11 @@ This project is the backend for a coffee shop application, built using Fastify, 
 - **TypeScript**: A superset of JavaScript that adds static types.
 - **Prisma**: An ORM for working with databases in Node.js and TypeScript.
 - **Zod**: A schema declaration and validation library.
+- **Docker**: A platform for developing, shipping, and running applications in containers.
 
 ## Installation
 
-Before running the application, ensure you have Node.js and npm (or yarn) installed. Then, follow these steps:
+Before running the application, ensure you have Node.js, npm (or yarn), and Docker installed. Then, follow these steps:
 
 1. Clone the repository:
 
@@ -37,7 +38,13 @@ Before running the application, ensure you have Node.js and npm (or yarn) instal
    yarn install
    ```
 
-3. Set up the database:
+3. Start the Docker containers:
+
+   ```sh
+   docker-compose up -d
+   ```
+
+4. Set up the database:
    ```sh
    npx prisma migrate dev --name init
    ```
@@ -76,6 +83,7 @@ coffee-shop-back/
 │   ├── index.ts
 │   └── ...
 ├── .gitignore
+├── docker-compose.yml
 ├── package.json
 ├── tsconfig.json
 └── ...
@@ -108,6 +116,11 @@ coffee-shop-back/
 - **prisma**: Prisma ORM CLI.
 - **tsx**: TSX runner for TypeScript projects.
 - **typescript**: Superset of JavaScript that adds types.
+
+### Docker
+
+- **Docker**: Ensure Docker is installed to run the application in containers.
+- **docker-compose**: Used to manage multi-container Docker applications.
 
 Feel free to explore the code and make any modifications as needed. If you encounter any issues, please open an issue on the repository.
 
