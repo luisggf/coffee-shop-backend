@@ -1,127 +1,146 @@
 # Coffee Shop Backend
 
-This project is the backend for a coffee shop application, built using Fastify, TypeScript, Prisma, and other modern web development technologies. This README will guide you through the setup process, explaining the dependencies and how to run the code.
+## Libraries and Commands Used in This Project
 
-## Table of Contents
+### 1. Initialize a Node Project
 
-- [Technologies Used](#technologies-used)
-- [Installation](#installation)
-- [Running the Application](#running-the-application)
-- [Project Structure](#project-structure)
-- [Scripts](#scripts)
-- [Dependencies](#dependencies)
+Create a new Node.js project:
 
-## Technologies Used
+```bash
+npm init -y
+```
 
-- **Fastify**: A fast and low-overhead web framework for Node.js.
-- **TypeScript**: A superset of JavaScript that adds static types.
-- **Prisma**: An ORM for working with databases in Node.js and TypeScript.
-- **Zod**: A schema declaration and validation library.
-- **Docker**: A platform for developing, shipping, and running applications in containers.
+### 2. Set Up TypeScript
 
-## Installation
+TypeScript is used for data typing in JavaScript:
 
-Before running the application, ensure you have Node.js, npm (or yarn), and Docker installed. Then, follow these steps:
+```bash
+npm install typescript @types/node -D
+npx tsc --init
+```
 
-1. Clone the repository:
+### 3. Install `tsx` for TypeScript Execution
 
-   ```sh
-   git clone https://github.com/your-username/coffee-shop-back.git
-   cd coffee-shop-back
-   ```
+Install `tsx` as a development dependency to run TypeScript files:
 
-2. Install the dependencies:
+```bash
+npm install tsx -D
+```
 
-   ```sh
-   npm install
-   # or
-   yarn install
-   ```
+### 4. Set Up Prisma ORM
 
-3. Start the Docker containers:
+Prisma is an ORM that simplifies data manipulation:
 
-   ```sh
-   docker-compose up -d
-   ```
+```bash
+npm install prisma -D
+npx prisma init
+```
 
-4. Set up the database:
-   ```sh
-   npx prisma migrate dev --name init
-   ```
+To manage your database schema, you can use (for visualization of the data):
 
-## Running the Application
+```bash
+npx prisma studio
+```
 
-You can run the application in development mode using the following command:
+To apply schema changes and run migrations:
 
-### Development Mode
+```bash
+npx prisma migrate dev
+```
 
-To start the development server with hot reloading, run:
+## Setting the Project up
 
-```sh
+### 1. Clone the repository and install the dependencies via package.json
+
+Clone this repository to your local machine:
+
+```bash
+git clone https://github.com/luisggf/coffee-shop-backend
+cd <repository-directory>
+```
+
+### 2. Install Project Dependencies
+
+The package.json file is already configured with all the necessary dependencies. To install them, simply run:
+
+```bash
+npm install
+```
+
+## To Run This Project
+
+### 1. Set Up Environment Variables
+
+Create a `.env` file in the root directory with the following contents (you can modify the values according to your own setup). Example:
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/coffee_shop?schema=public"
+```
+
+## Docker Configuration
+
+The `docker-compose.yml` file defines the services for PostgreSQL:
+
+```yaml
+version: "3.7"
+
+services:
+  postgres:
+    image: bitnami/postgresql:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=coffee_shop
+    volumes:
+      - coffee_shop_pg_data:/bitnami/postgresql
+
+volumes:
+  coffee_shop_pg_data:
+```
+
+### Important Notes:
+
+- Ensure that the `POSTGRES_USER` and `POSTGRES_PASSWORD` in the `docker-compose.yml` file match the credentials specified in the `.env` file.
+- Use the `DATABASE_URL` in the `.env` file to connect to the PostgreSQL database.
+
+### 2. Run Docker to Create Database Containers
+
+Use Docker to start PostgreSQL containers:
+
+```bash
+docker compose up -d
+```
+
+### 3. Apply Database Migrations
+
+After setting up the Docker containers, apply the latest database migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+In case this command doesn't work, check for any local PostgreSQL instance that might be interfering with the Prisma migration for the Docker VM.
+
+### 4. Start the Development Server
+
+To start the server, use the following command:
+
+```bash
 npm run dev
-# or
-yarn dev
 ```
 
-## Project Structure
+### 5. End
 
-The project structure is as follows:
+Now you're ready to go! The server is successfully running, and the backend is prepared to accept and communicate with the frontend application.  
+The frontend application can be found here: https://github.com/luisggf/coffee-shop-frontend
 
-```
-coffee-shop-back/
-├── node_modules/
-├── prisma/
-│   ├── schema.prisma
-│   └── ...
-├── src/
-│   ├── http/
-│   │   ├── server.ts
-│   │   └── ...
-│   ├── repositories/
-│   ├── services/
-│   ├── utils/
-│   ├── index.ts
-│   └── ...
-├── .gitignore
-├── docker-compose.yml
-├── package.json
-├── tsconfig.json
-└── ...
+OBS: To rerun this server at any time, use the following sequence of commands:
+
+```bash
+docker compose up
+npm run dev
 ```
 
-## Scripts
-
-- **dev**: Starts the development server with TypeScript support and hot reloading.
-
-## Dependencies
-
-### Runtime Dependencies
-
-- **@fastify/cors**: CORS plugin for Fastify.
-- **@fastify/multipart**: Multipart/form-data plugin for Fastify.
-- **@fastify/static**: Plugin for serving static files in Fastify.
-- **@prisma/client**: Prisma client for database access.
-- **fastify**: Web framework for Node.js.
-- **fastify-multer**: Middleware for handling multipart/form-data in Fastify.
-- **flatted**: Library for safely stringifying and parsing circular JSON.
-- **multer**: Middleware for handling multipart/form-data.
-- **zod**: Library for schema declaration and validation.
-
-### Development Dependencies
-
-- **@types/fastify-cors**: TypeScript definitions for fastify-cors.
-- **@types/multer**: TypeScript definitions for multer.
-- **@types/node**: TypeScript definitions for Node.js.
-- **fastify-cors**: CORS plugin for Fastify.
-- **prisma**: Prisma ORM CLI.
-- **tsx**: TSX runner for TypeScript projects.
-- **typescript**: Superset of JavaScript that adds types.
-
-### Docker
-
-- **Docker**: Ensure Docker is installed to run the application in containers.
-- **docker-compose**: Used to manage multi-container Docker applications.
-
-Feel free to explore the code and make any modifications as needed. If you encounter any issues, please open an issue on the repository.
-
-Happy coding!
+- Note that the Docker Desktop program must be running.
